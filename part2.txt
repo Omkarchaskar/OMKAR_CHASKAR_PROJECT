@@ -1,0 +1,99 @@
+// BankingApp.java
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class BankingApp extends JFrame {
+    private JTextField amountField;
+    private JLabel balanceLabel;
+    private BankAccount bankAccount;
+
+    public BankingApp() {
+        // Initialize the bank account
+        bankAccount = new BankAccount("123456", "John Doe", 1000.0);
+
+        // Frame properties
+        setTitle("Mini Banking Application");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 300);
+        getContentPane().setLayout(null);
+
+        // Account details labels
+        JLabel accountLabel = new JLabel("Account: " + bankAccount.getAccountNumber());
+        accountLabel.setBounds(20, 20, 200, 25);
+        getContentPane().add(accountLabel);
+
+        JLabel nameLabel = new JLabel("Account Holder: " + bankAccount.getAccountHolderName());
+        nameLabel.setBounds(20, 50, 200, 25);
+        getContentPane().add(nameLabel);
+
+        balanceLabel = new JLabel("Balance: $" + bankAccount.getBalance());
+        balanceLabel.setBounds(20, 80, 200, 25);
+        getContentPane().add(balanceLabel);
+
+        // Amount label and text field
+        JLabel amountLabel = new JLabel("Amount:");
+        amountLabel.setBounds(20, 110, 80, 25);
+        getContentPane().add(amountLabel);
+
+        amountField = new JTextField();
+        amountField.setBounds(100, 110, 160, 25);
+        getContentPane().add(amountField);
+
+        // Deposit button
+        JButton depositButton = new JButton("Deposit");
+        depositButton.setBounds(20, 150, 100, 25);
+        getContentPane().add(depositButton);
+        depositButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    double amount = Double.parseDouble(amountField.getText());
+                    bankAccount.deposit(amount);
+                    balanceLabel.setText("Balance: $" + bankAccount.getBalance());
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Please enter a valid amount.");
+                }
+            }
+        });
+
+        // Withdraw button
+        JButton withdrawButton = new JButton("Withdraw");
+        withdrawButton.setBounds(140, 150, 100, 25);
+        getContentPane().add(withdrawButton);
+        withdrawButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    double amount = Double.parseDouble(amountField.getText());
+                    bankAccount.withdraw(amount);
+                    balanceLabel.setText("Balance: $" + bankAccount.getBalance());
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Please enter a valid amount.");
+                }
+            }
+        });
+
+        // Check balance button
+        JButton balanceButton = new JButton("Check Balance");
+        balanceButton.setBounds(260, 150, 120, 25);
+        getContentPane().add(balanceButton);
+        balanceButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                balanceLabel.setText("Balance: $" + bankAccount.getBalance());
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        // Run the application
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    BankingApp frame = new BankingApp();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+}
